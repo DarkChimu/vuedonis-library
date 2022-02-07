@@ -22,6 +22,7 @@ const Route = use('Route')
 Route.group(() => {
     Route.post('/register', 'UserController.register')
     Route.post('/login', 'UserController.login')
+    Route.post('/forgot', 'UserController.resetPassword')
     Route.get('/me', 'UserController.me').middleware(['auth'])
 }).prefix('api')
 
@@ -33,6 +34,9 @@ Route.group(() => {
     Route.get('/:id/myBooks', 'UserController.myBooks')
     Route.put('/:id', 'UserController.update')
     Route.delete('/:id', 'UserController.delete')
+    Route.put('/:id/grantAdmin', 'UserController.grantAdmin')
+    Route.post('/reports', 'UserController.createReport')
+    Route.get('/:id/reports', 'UserController.reports')
 }).prefix('api/users').middleware(['auth'])
 
 // LIBROS

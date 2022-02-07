@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-container>
-      <v-col cols="3">
+        <v-col cols="3">
         <v-text-field
           v-model="search"
           label="Buscar"
@@ -9,6 +9,7 @@
           @input="searchBook"
         />
       </v-col>
+      <v-col style="min-height: 75vh">
       <v-row>
         <v-col class="ml-1" cols="3" v-for="book of books" :key="book.id">
           <v-card>
@@ -44,7 +45,15 @@
           </v-card>
         </v-col>
       </v-row>
+      </v-col>
     </v-container>
+    <div style="position: relative; width: 100%; bottom: 1px" class="text--center">
+    <v-pagination
+      v-model="queryParams.page"
+      :length="queryTotal"
+      circle
+    ></v-pagination>
+      </div>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title>
@@ -92,6 +101,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-overlay :value="overlay">
+      <v-progress-circular
+        indeterminate
+        size="64"
+      ></v-progress-circular>
+    </v-overlay>
     <sweet-modal ref="ok" :icon="modalInfoState">{{ modalInfoMessage }}</sweet-modal>
   </v-row>
 </template>
@@ -107,6 +122,12 @@ export default {
     SweetModalTab,
   },
   data: () => ({
+    overlay: false,
+    queryParams: {
+      page: 1,
+      perPage: 10,
+    },
+    queryTotal: 0,
     dialog: false,
     dialogLoan: false,
     books: [],
@@ -174,6 +195,7 @@ export default {
   },
   methods: {
     async initialize(search) {
+      this.overlay = true;
       let URL = "/books";
 
       if (search) {
@@ -181,7 +203,9 @@ export default {
       }
 
       const res = await this.$axios.$get(URL);
+      this.queryTotal = res.lastPage;
       this.books = res.data;
+      this.overlay = false;
     },
     showInfo(item) {
       this.selectedBook = item;
