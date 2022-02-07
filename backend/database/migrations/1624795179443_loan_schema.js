@@ -9,9 +9,8 @@ class LoanSchema extends Schema {
       table.increments()
       table.integer('book_id').unsigned().references('id').inTable('books')
       table.integer('user_id').unsigned().references('id').inTable('users')
-      table.integer('quantity').default(0)
-      table.string('limit_date')
-      table.string('delivered_date')
+      table.date('limit')
+      table.date('delivered')
       table.timestamps()
     })
   }

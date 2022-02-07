@@ -6,6 +6,42 @@ const Hash = use('Hash')
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
+/** 
+*  @swagger
+*  definitions:
+*    User:
+*      type: object
+*      properties:
+*        id:
+*          type: uint
+*        username:
+*          type: string
+*        email:
+*          type: string
+*        password:
+*          type: string
+*        first_name:
+*          type: string
+*        last_name:
+*          type: string
+*        ci:
+*          type: string
+*        address:
+*          type: string
+*        photo_url:
+*          type: string
+*        role:
+*          type: string
+*        created_at:
+*          type: string
+*        updated_at:
+*          type: string
+*      required:
+*        - username
+*        - email
+*        - password
+*/
+
 class User extends Model {
   static boot () {
     super.boot()
@@ -37,6 +73,10 @@ class User extends Model {
 
   loans () {
     return this.hasMany('App/Models/Loan')
+  }
+
+  reports() {
+    return this.hasMany('App/Models/Report')
   }
 }
 

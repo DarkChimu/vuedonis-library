@@ -1,12 +1,14 @@
 <template>
   <v-row>
     <v-col cols="1"></v-col>
-    <v-col cols="8">
+    <v-col cols="10">
       <v-data-table
         :headers="headers"
         :items="books"
         sort-by="created_at"
         class="elevation-5 mx-auto mt-10"
+        :loading="loading"
+        loading-text="Cargando..."
       >
         <template v-slot:top>
           <v-toolbar flat>
@@ -323,6 +325,7 @@ export default {
     SweetModalTab,
   },
   data: () => ({
+    loading: false,
     dialog: false,
     dialogDelete: false,
     dialogDetails: false,
@@ -474,9 +477,10 @@ export default {
 
   methods: {
     async initialize() {
+      this.loading = true
       const res = await this.$axios.$get("/books")
       this.books = res.data
-      console.log(res)
+      this.loading = false
     },
 
     editItem(item) {
